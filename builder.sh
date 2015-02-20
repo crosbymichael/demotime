@@ -1,8 +1,8 @@
 #!/bin/bash
 
 function FROM () {
-    mkdir rootfs
-    dist pull "$1" rootfs
+    mkdir -p rootfs
+    # dist pull "$1" rootfs
 }
 
 function CWD() {
@@ -21,7 +21,11 @@ function EXEC() {
         --cwd="$nsinitcwd" \
         --memory-limit="$nsinitmem" \
         --memory-swap -1 \
-        --net host \
+        --userns-root-uid 1000 \
+        --veth-bridge docker0 \
+        --veth-mtu 1500 \
+        --veth-address "172.17.0.150/16" \
+        --veth-gateway "172.17.42.1" \
         -- "$@"
 }
 

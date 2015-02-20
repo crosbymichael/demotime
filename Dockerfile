@@ -11,7 +11,7 @@ RUN sh -c "echo nameserver 8.8.8.8 > /etc/resolv.conf"
 RUN sh -c "apt-get update && apt-get install -y --no-install-recommends default-jre curl ca-certificates"
 RUN sh -c "curl -SL -o /minecraft.jar https://s3.amazonaws.com/Minecraft.Download/versions/1.8.1/minecraft_server.1.8.1.jar"
 
-RUN mkdir /minecraft
+RUN mkdir -p /minecraft
 RUN sh -c "echo eula=true > /minecraft/eula.txt"
 
 CWD /minecraft
