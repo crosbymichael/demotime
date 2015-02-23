@@ -2,14 +2,23 @@
 
 function FROM () {
     mkdir -p rootfs
-    # dist pull "$1" rootfs
+    dist pull "$1"
+    dist mount "$1" rootfs
 }
 
+function COPY() {
+    echo "COPY" "$@"
+    mkdir -p "rootfs/$(dirname $2)"
+    cp "$1" "rootfs/$2"
+ }
+
 function CWD() {
+    echo "CWD" "$@"
     export nsinitcwd="$1"
 }
 
 function MEM() {
+    echo "MEM" "$@"
     export nsinitmem="$1"
 }
 
@@ -21,15 +30,12 @@ function EXEC() {
         --cwd="$nsinitcwd" \
         --memory-limit="$nsinitmem" \
         --memory-swap -1 \
-        --userns-root-uid 1000 \
-        --veth-bridge docker0 \
-        --veth-mtu 1500 \
-        --veth-address "172.17.0.150/16" \
-        --veth-gateway "172.17.42.1" \
+        --net host \
         -- "$@"
 }
 
 function RUN() {
+    echo "RUN" "$@"
     EXEC "$@"
 }
 
